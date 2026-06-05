@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class Tablero implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Casilla[][] tablero;
     private final int TAMANO = 10;
     private final int MINAS = 10;
@@ -20,9 +22,7 @@ public class Tablero implements Serializable {
     private void inicializar() {
 
         for (int i = 0; i < TAMANO; i++) {
-
             for (int j = 0; j < TAMANO; j++) {
-
                 tablero[i][j] = new CasillaNormal();
             }
         }
@@ -82,6 +82,33 @@ public class Tablero implements Serializable {
         }
 
         return contador;
+    }
+
+    public void descubrirCasilla(int fila, int columna) {
+        tablero[fila][columna].descubrir();
+    }
+
+    public boolean esMina(int fila, int columna) {
+        return tablero[fila][columna].esMina();
+    }
+    public void marcarCasilla(int fila, int columna) {
+        tablero[fila][columna].marcar();
+    }
+    public boolean verificarVictoria() {
+
+        for (int i = 0; i < TAMANO; i++) {
+
+            for (int j = 0; j < TAMANO; j++) {
+
+                Casilla c = tablero[i][j];
+
+                if (!c.esMina() && !c.estaDescubierta()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public Casilla[][] getTablero() {

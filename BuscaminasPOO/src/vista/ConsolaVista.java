@@ -30,12 +30,15 @@ public class ConsolaVista {
 
                 Casilla c = matriz[i][j];
 
-                if (!c.estaDescubierta()) {
+                if (c.estaMarcada()) {
+
+                    System.out.print("M ");
+
+                } else if (!c.estaDescubierta()) {
 
                     System.out.print("? ");
 
                 } else if (c.esMina()) {
-
                     System.out.print("X ");
 
                 } else {
