@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.Random;
+import excepciones.CasillaYaDescubiertaException;
 
 public class Tablero implements Serializable {
 
@@ -84,7 +85,8 @@ public class Tablero implements Serializable {
         return contador;
     }
 
-    public void descubrirCasilla(int fila, int columna) {
+    public void descubrirCasilla(int fila, int columna)
+            throws CasillaYaDescubiertaException {
 
         if (fila < 0 || fila >= TAMANO ||
             columna < 0 || columna >= TAMANO) {
@@ -93,8 +95,13 @@ public class Tablero implements Serializable {
 
         Casilla casilla = tablero[fila][columna];
 
-        if (casilla.estaDescubierta() ||
-            casilla.estaMarcada()) {
+        if (casilla.estaDescubierta()) {
+
+            throw new CasillaYaDescubiertaException(
+                    "La casilla ya fue descubierta.");
+        }
+
+        if (casilla.estaMarcada()) {
             return;
         }
 
@@ -110,6 +117,7 @@ public class Tablero implements Serializable {
                 descubrirVecinas(fila, columna);
             }
         }
+    
     }
 
     private void descubrirVecinas(int fila, int columna) {
@@ -123,8 +131,18 @@ public class Tablero implements Serializable {
 
                     if (!tablero[i][j].estaDescubierta()) {
 
-                        descubrirCasilla(i, j);
+                        try {
+
+                            descubrirCasilla(i, j);
+
+                        } catch (CasillaYaDescubiertaException e) {
+
+                        }
                     }
+                
+            
+        
+    
                 }
             }
         }

@@ -1,7 +1,7 @@
 package controlador;
 
 import java.util.Scanner;
-
+import excepciones.CasillaYaDescubiertaException;
 import modelo.Juego;
 import vista.ConsolaVista;
 
@@ -112,6 +112,10 @@ public class JuegoControlador {
 
                     juego.terminar();
                 }
+
+            } catch (CasillaYaDescubiertaException e) {
+
+                System.out.println(e.getMessage());
 
             } catch (Exception e) {
 
