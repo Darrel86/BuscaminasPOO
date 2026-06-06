@@ -85,7 +85,49 @@ public class Tablero implements Serializable {
     }
 
     public void descubrirCasilla(int fila, int columna) {
-        tablero[fila][columna].descubrir();
+
+        if (fila < 0 || fila >= TAMANO ||
+            columna < 0 || columna >= TAMANO) {
+            return;
+        }
+
+        Casilla casilla = tablero[fila][columna];
+
+        if (casilla.estaDescubierta() ||
+            casilla.estaMarcada()) {
+            return;
+        }
+
+        casilla.descubrir();
+
+        if (!casilla.esMina()) {
+
+            CasillaNormal normal =
+                    (CasillaNormal) casilla;
+
+            if (normal.getMinasAdyacentes() == 0) {
+
+                descubrirVecinas(fila, columna);
+            }
+        }
+    }
+
+    private void descubrirVecinas(int fila, int columna) {
+
+        for (int i = fila - 1; i <= fila + 1; i++) {
+
+            for (int j = columna - 1; j <= columna + 1; j++) {
+
+                if (i >= 0 && i < TAMANO &&
+                    j >= 0 && j < TAMANO) {
+
+                    if (!tablero[i][j].estaDescubierta()) {
+
+                        descubrirCasilla(i, j);
+                    }
+                }
+            }
+        }
     }
 
     public boolean esMina(int fila, int columna) {
